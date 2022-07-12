@@ -1,0 +1,6 @@
+fpdf (pip install fpdf)
+requests (pip install requests)
+beautifulsoup4  (pip install beautifulsoup4)
+lxml (pip install lxml)
+jsonlines (pip install jsonlines)
+python-dateutil (pip install python-dateutil)
