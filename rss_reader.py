@@ -16,6 +16,8 @@ from logging import StreamHandler, Formatter
 from bs4 import BeautifulSoup
 from dateutil import parser
 from fpdf import FPDF 
+from colorama import Fore
+from colorama import Style
 
 
 version = '4.3'
@@ -326,12 +328,17 @@ class MyFeedParser:
             return True
         
     def __str__(self):
-        result = '\n' + "Feed: {}".format(self.feed) + '\n' + '\n'
+        self.news.sort(key=lambda dictionary: dictionary['feed'])
+        feed = self.news[0]['feed']
+        result = '\n' + f"Feed: {Fore.RED}{feed}{Style.RESET_ALL}" + '\n' + '\n'
         for n in self.news:
-            result += "Title: {}".format(n['title']) + '\n'
-            result += "Date: {}".format(n['pubdate']) + '\n'
-            result += "Link: {}".format(n['link']) + '\n'
-            result += "Description: {}".format(n['description']) + '\n' + '\n'
+            if n['feed'] != feed:
+                feed = n['feed']
+                result += '\n' + f"Feed: {Fore.RED}{feed}{Style.RESET_ALL}" + '\n' + '\n'
+            result += f"Title: {Fore.BLUE}{n['title']}{Style.RESET_ALL}" + '\n'
+            result += f"Date: {Fore.GREEN}{n['pubdate']}{Style.RESET_ALL}" + '\n'
+            result += f"Link: {Fore.YELLOW}{n['link']}{Style.RESET_ALL}" + '\n'
+            result += f"Description: {n['description']}" + '\n' + '\n'
         return result
 
     def choose_printout(self, json, html, pdf, verbose):

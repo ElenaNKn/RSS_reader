@@ -16,7 +16,8 @@ setup(
     'lxml>=4.9.0',
     'beautifulsoup4>=4.11.1',
     'jsonlines>=3.0.0',
-    'python-dateutil>=2.8.2'
+    'python-dateutil>=2.8.2',
+    'colorama >= 0.4.5'
     ],
     entry_points={
         'console_scripts': [

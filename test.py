@@ -7,6 +7,8 @@ import rss_reader
 from tempfile import gettempdir
 from datetime import datetime
 from unittest.mock import MagicMock
+from colorama import Fore
+from colorama import Style
 
 
 class TestReader(unittest.TestCase):
@@ -116,10 +118,10 @@ class TestReader(unittest.TestCase):
             'media_url': '', 'media_path': '', 'feed': 'feed1', 'source': 'source'
             }
         ]
-        expected_output = '\n' + 'Feed: feed1' + '\n' + '\n'
-        expected_output += 'Title: title1' + '\n'
-        expected_output += 'Date: date1' + '\n'
-        expected_output += 'Link: link1' + '\n'
+        expected_output = '\n' + f'Feed: {Fore.RED}feed1{Style.RESET_ALL}' + '\n' + '\n'
+        expected_output += f'Title: {Fore.BLUE}title1{Style.RESET_ALL}' + '\n'
+        expected_output += f'Date: {Fore.GREEN}date1{Style.RESET_ALL}' + '\n'
+        expected_output += f'Link: {Fore.YELLOW}link1{Style.RESET_ALL}' + '\n'
         expected_output += 'Description: descr1' + '\n' + '\n' + '\n'
         with patch('sys.stdout', new = StringIO()) as fake_out:
             print(new_obj)
@@ -149,10 +151,10 @@ class TestReader(unittest.TestCase):
             'media_url': '', 'media_path': '', 'feed': 'feed1', 'source': 'source'
             }
         ]
-        expected_output = '\n' + 'Feed: feed1' + '\n' + '\n'
-        expected_output += 'Title: title1' + '\n'
-        expected_output += 'Date: date1' + '\n'
-        expected_output += 'Link: link1' + '\n'
+        expected_output = '\n' + f'Feed: {Fore.RED}feed1{Style.RESET_ALL}' + '\n' + '\n'
+        expected_output += f'Title: {Fore.BLUE}title1{Style.RESET_ALL}' + '\n'
+        expected_output += f'Date: {Fore.GREEN}date1{Style.RESET_ALL}' + '\n'
+        expected_output += f'Link: {Fore.YELLOW}link1{Style.RESET_ALL}' + '\n'
         expected_output += 'Description: descr1' + '\n' + '\n' + '\n'
         test_cases = [
             {
