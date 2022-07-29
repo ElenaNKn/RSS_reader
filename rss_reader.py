@@ -286,24 +286,32 @@ class MyFeedParser:
             pdf.add_font('DejaVuSerif', 'I', font_path, uni=True)
 
             pdf.add_page()
-            pdf.set_font('DejaVuSerif', 'B', 16)
+            pdf.set_font('DejaVuSerif', 'B', 18)
+            pdf.set_text_color(204, 0, 0)
             self.news.sort(key=lambda dictionary: dictionary['feed'])
             feed = self.news[0]['feed']
             pdf.cell(0, 5, feed, 0, 1)
+            pdf.set_text_color(0, 0, 0)
             pdf.ln() 
             im_count = 0
             for n in self.news:
                 if n['feed'] != feed:
-                    pdf.set_font('DejaVuSerif', 'B', 16)
+                    pdf.set_font('DejaVuSerif', 'B', 18)
+                    pdf.set_text_color(204, 0, 0)
                     feed = n['feed']
                     pdf.ln()
                     pdf.cell(0, 5, feed, 0, 1)
+                    pdf.set_text_color(0, 0, 0)
                     pdf.ln()
                 pdf.set_font('DejaVuSerif', 'B', 12)
+                pdf.set_text_color(0, 0, 153)
                 pdf.multi_cell(0, 5, n['title'], 0)  
                 pdf.set_font('DejaVuSerif', 'I', 10)
+                pdf.set_text_color(0, 0, 0)
                 pdf.cell(0, 5, 'Date: '+n['pubdate'][:10], 0, 1) 
+                pdf.set_text_color(0, 0, 255)
                 pdf.cell(0, 5, 'Link: '+n['link'], 0, 1, '', False, n['link'])
+                pdf.set_text_color(0, 0, 0)
                 if n['media_url'] != '':
                     with open(n['media_path'], 'rb') as fi:
                         data_base64 = pickle.load(fi)
