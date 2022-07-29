@@ -238,7 +238,7 @@ class MyFeedParser:
         try:
             shutil.copy('rss_downloads.html', path)
             mypath = os.path.join(path, 'rss_downloads.html')
-            with open(mypath, 'w', encoding='utf-16') as f:
+            with open(mypath, 'a', encoding='utf-8') as f:
                 self.news.sort(key=lambda dictionary: dictionary['feed'])
                 feed = self.news[0]['feed']
                 a = '  <h1>' + feed + '</h1>'
@@ -248,7 +248,7 @@ class MyFeedParser:
                         a = '  <h1>' + n['feed'] + '</h1>'
                         f.write(a)
                         feed = n['feed']
-                    a = '  <h3><b>' + n['title'] + '</b></h3>'
+                    a = '  <div>\n' + '  <h3><b>' + n['title'] + '</b></h3>'
                     a += '<p>Date: <i>' + n['pubdate'][:10] + '</i><br>'
                     a += 'Link: <a href =' + n['link'] + '>' + n['link'] + '</a><br>'
                     f.write(a)
@@ -259,7 +259,7 @@ class MyFeedParser:
                         img_html = '  ' + '<img src="data:image/jpeg;base64,' + data
                         img_html += '" alt="New image" height = "150"'    # embed in html
                         f.write(img_html)
-                    a = '<br><br>' + n['description'] + '<br></p>'
+                    a = '<br><br>' + n['description'] + '<br></p>' + '\n</div>'
                     f.write(a)
                 f.write('</body>')
                 f.write('</html>')
