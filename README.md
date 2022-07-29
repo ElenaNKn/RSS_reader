@@ -9,7 +9,7 @@
     <h2>Description</h2>
     <p>This application is Python RSS-reader. It is implemented to read news from a given feed with prescribed arguments.</p>
     <h2>Requirements</h2>
-    <p>The application requires the next Python libraries to be installed: <br><i>fpdf<br>requests<br>beautifulsoup4<br>lxml<br>jsonlines<br>python-dateutil</i></p>
+    <p>The application requires the next Python libraries to be installed: <br><i>fpdf<br>requests<br>beautifulsoup4<br>lxml<br>jsonlines<br>python-dateutil<br>colorama</i></p>
     <p>Necessary libraries may be installed by entering the next command in a command line:<br><b>pip install library_name</b></p>
     <h2>Running</h2>
     <p>User can run the application from a command line (from a folder, where scripts of rss_reader are situated) in two ways:</p>

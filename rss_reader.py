@@ -16,6 +16,8 @@ from logging import StreamHandler, Formatter
 from bs4 import BeautifulSoup
 from dateutil import parser
 from fpdf import FPDF 
+from colorama import Fore
+from colorama import Style
 
 
 version = '4.3'
@@ -236,7 +238,7 @@ class MyFeedParser:
         try:
             shutil.copy('rss_downloads.html', path)
             mypath = os.path.join(path, 'rss_downloads.html')
-            with open(mypath, 'w', encoding='utf-16') as f:
+            with open(mypath, 'a', encoding='utf-8') as f:
                 self.news.sort(key=lambda dictionary: dictionary['feed'])
                 feed = self.news[0]['feed']
                 a = '  <h1>' + feed + '</h1>'
@@ -246,7 +248,7 @@ class MyFeedParser:
                         a = '  <h1>' + n['feed'] + '</h1>'
                         f.write(a)
                         feed = n['feed']
-                    a = '  <h3><b>' + n['title'] + '</b></h3>'
+                    a = '  <div>\n' + '  <h3><b>' + n['title'] + '</b></h3>'
                     a += '<p>Date: <i>' + n['pubdate'][:10] + '</i><br>'
                     a += 'Link: <a href =' + n['link'] + '>' + n['link'] + '</a><br>'
                     f.write(a)
@@ -257,7 +259,7 @@ class MyFeedParser:
                         img_html = '  ' + '<img src="data:image/jpeg;base64,' + data
                         img_html += '" alt="New image" height = "150"'    # embed in html
                         f.write(img_html)
-                    a = '<br><br>' + n['description'] + '<br></p>'
+                    a = '<br><br>' + n['description'] + '<br></p>' + '\n</div>'
                     f.write(a)
                 f.write('</body>')
                 f.write('</html>')
@@ -284,24 +286,32 @@ class MyFeedParser:
             pdf.add_font('DejaVuSerif', 'I', font_path, uni=True)
 
             pdf.add_page()
-            pdf.set_font('DejaVuSerif', 'B', 16)
+            pdf.set_font('DejaVuSerif', 'B', 18)
+            pdf.set_text_color(204, 0, 0)
             self.news.sort(key=lambda dictionary: dictionary['feed'])
             feed = self.news[0]['feed']
             pdf.cell(0, 5, feed, 0, 1)
+            pdf.set_text_color(0, 0, 0)
             pdf.ln() 
             im_count = 0
             for n in self.news:
                 if n['feed'] != feed:
-                    pdf.set_font('DejaVuSerif', 'B', 16)
+                    pdf.set_font('DejaVuSerif', 'B', 18)
+                    pdf.set_text_color(204, 0, 0)
                     feed = n['feed']
                     pdf.ln()
                     pdf.cell(0, 5, feed, 0, 1)
+                    pdf.set_text_color(0, 0, 0)
                     pdf.ln()
                 pdf.set_font('DejaVuSerif', 'B', 12)
+                pdf.set_text_color(0, 0, 153)
                 pdf.multi_cell(0, 5, n['title'], 0)  
                 pdf.set_font('DejaVuSerif', 'I', 10)
+                pdf.set_text_color(0, 0, 0)
                 pdf.cell(0, 5, 'Date: '+n['pubdate'][:10], 0, 1) 
+                pdf.set_text_color(0, 0, 255)
                 pdf.cell(0, 5, 'Link: '+n['link'], 0, 1, '', False, n['link'])
+                pdf.set_text_color(0, 0, 0)
                 if n['media_url'] != '':
                     with open(n['media_path'], 'rb') as fi:
                         data_base64 = pickle.load(fi)
@@ -326,12 +336,17 @@ class MyFeedParser:
             return True
         
     def __str__(self):
-        result = '\n' + "Feed: {}".format(self.feed) + '\n' + '\n'
+        self.news.sort(key=lambda dictionary: dictionary['feed'])
+        feed = self.news[0]['feed']
+        result = '\n' + f"Feed: {Fore.RED}{feed}{Style.RESET_ALL}" + '\n' + '\n'
         for n in self.news:
-            result += "Title: {}".format(n['title']) + '\n'
-            result += "Date: {}".format(n['pubdate']) + '\n'
-            result += "Link: {}".format(n['link']) + '\n'
-            result += "Description: {}".format(n['description']) + '\n' + '\n'
+            if n['feed'] != feed:
+                feed = n['feed']
+                result += '\n' + f"Feed: {Fore.RED}{feed}{Style.RESET_ALL}" + '\n' + '\n'
+            result += f"Title: {Fore.BLUE}{n['title']}{Style.RESET_ALL}" + '\n'
+            result += f"Date: {Fore.GREEN}{n['pubdate']}{Style.RESET_ALL}" + '\n'
+            result += f"Link: {Fore.YELLOW}{n['link']}{Style.RESET_ALL}" + '\n'
+            result += f"Description: {n['description']}" + '\n' + '\n'
         return result
 
     def choose_printout(self, json, html, pdf, verbose):
